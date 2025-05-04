@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz - Coordonnées Géographiques</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f0f8ff;
+    }
+    .question {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .answers {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+    .answer {
+      border: 2px solid #007acc;
+      border-radius: 8px;
+      padding: 10px;
+      margin: 5px 0;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .answer:hover {
+      transform: scale(1.05);
+    }
+    .selected {
+      background-color: #cce5ff;
+    }
+    #message {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div id="quiz"></div>
+  <div id="message"></div>
+  <script>
+    const quiz = [
+      {
+        question: "Quelle est la latitude de l'équateur ?",
+        options: ["0°", "90°", "45°", "180°"],
+        answer: 0
+      },
+      {
+        question: "Quelle est la longitude du méridien de Greenwich ?",
+        options: ["90°E", "0°", "180°", "45°W"],
+        answer: 1
+      },
+      {
+        question: "La latitude maximale est :",
+        options: ["180°", "360°", "90°", "0°"],
+        answer: 2
+      },
+      {
+        question: "Les coordonnées GPS sont exprimées en :",
+        options: ["mètres", "heures", "degrés", "pouces"],
+        answer: 2
+      },
+      {
+        question: "Quel outil utilise-t-on pour obtenir les coordonnées GPS ?",
+        options: ["Baromètre", "Altimètre", "GPS", "Thermomètre"],
+        answer: 2
+      },
+      {
+        question: "Quel hémisphère est au sud de l'équateur ?",
+        options: ["Nord", "Ouest", "Sud", "Est"],
+        answer: 2
+      },
+      {
+        question: "Quel est le point de longitude maximale ?",
+        options: ["360°", "180°", "90°", "0°"],
+        answer: 1
+      },
+      {
+        question: "La latitude se mesure par rapport :",
+        options: ["au pôle Nord", "au pôle Sud", "à l'équateur", "au méridien de Greenwich"],
+        answer: 2
+      },
+      {
+        question: "Le GPS signifie :",
+        options: ["Global Positioning System", "Geo Position Standard", "Global Point Survey", "Grand Point Spatial"],
+        answer: 0
+      },
+      {
+        question: "Quel continent est traversé par l'équateur ?",
+        options: ["Europe", "Amérique du Nord", "Afrique", "Antarctique"],
+        answer: 2
+      }
+    ];
+
+    let current = 0;
+
+    function showQuestion() {
+      const quizDiv = document.getElementById('quiz');
+      const message = document.getElementById('message');
+      message.textContent = "";
+      const q = quiz[current];
+      quizDiv.innerHTML = `<div class="question">${q.question}</div>`;
+      const answersDiv = document.createElement('div');
+      answersDiv.className = 'answers';
+
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('div');
+        btn.className = 'answer';
+        btn.textContent = opt;
+        btn.onclick = () => handleAnswer(i, btn);
+        answersDiv.appendChild(btn);
+      });
+
+      quizDiv.appendChild(answersDiv);
+    }
+
+    function handleAnswer(i, btn) {
+      const q = quiz[current];
+      const allAnswers = document.querySelectorAll('.answer');
+      allAnswers.forEach(a => a.classList.remove('selected'));
+      btn.classList.add('selected');
+
+      if (i === q.answer) {
+        document.getElementById('message').textContent = 'Bravo !'; // Исправлено text-Content на textContent
+        setTimeout(() => {
+          current++;
+          if (current < quiz.length) {
+            showQuestion();
+          } else {
+            document.getElementById('quiz').innerHTML = '<h2>Quiz terminé !<img src="https://files.catbox.moe/el0z5a.gif"></h2>';
+            document.getElementById('message').textContent = ''; // Исправлено text-Content на textContent
+          }
+        }, 1000);
+      } else {
+        document.getElementById('message').textContent = 'Réessayez.'; // Исправлено text-Content на textContent
+      }
+    }
+
+    showQuestion();
+  </script>
+</body>
+</html>
